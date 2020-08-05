@@ -1,0 +1,31 @@
+import {BootMixin} from '@loopback/boot';
+import {ApplicationConfig} from '@loopback/core';
+import {RepositoryMixin} from '@loopback/repository';
+import {RestApplication} from '@loopback/rest';
+import {CrudRestComponent} from '@loopback/rest-crud';
+import {RestExplorerComponent} from '@loopback/rest-explorer';
+import {MySequence} from './sequence';
+
+export {ApplicationConfig};
+
+export class TodoApplication extends BootMixin(
+  RepositoryMixin(RestApplication),
+) {
+  constructor(options: ApplicationConfig = {}) {
+    super(options);
+
+    this.sequence(MySequence);
+
+    this.component(RestExplorerComponent);
+    this.component(CrudRestComponent);
+
+    this.projectRoot = __dirname;
+    this.bootOptions = {
+      controllers: {
+        dirs: ['controllers'],
+        extensions: ['.controller.js'],
+        nested: true,
+      },
+    };
+  }
+}
