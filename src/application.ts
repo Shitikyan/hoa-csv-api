@@ -8,7 +8,7 @@ import {MySequence} from './sequence';
 
 export {ApplicationConfig};
 
-export class TodoApplication extends BootMixin(
+export class MOAApplication extends BootMixin(
   RepositoryMixin(RestApplication),
 ) {
   constructor(options: ApplicationConfig = {}) {

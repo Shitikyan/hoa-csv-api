@@ -45,6 +45,7 @@
     "@loopback/rest": "^6.0.0",
     "@loopback/rest-crud": "^0.8.11",
     "@loopback/rest-explorer": "^2.2.8",
+    "loopback-connector-mongodb": "^5.3.0",
     "loopback-connector-rest": "^3.7.0",
     "tslib": "^2.0.0"
   },
@@ -65,7 +66,7 @@
     "example",
     "CRUD",
     "models",
-    "todo"
+    "moa"
   ],
   "gitHead": "1619bf0c29aa03853a7977212e60028664fca640"
 }
