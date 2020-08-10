@@ -1,11 +1,12 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property, belongsTo } from '@loopback/repository';
+import { Batch, BatchWithRelations } from '.';
 
 @model()
 export class BatchRow extends Entity {
   @property({
     type: 'string',
     id: true,
-    mongodb: {dataType: 'ObjectId'},
+    mongodb: { dataType: 'ObjectId' },
   })
   id: string;
 
@@ -534,13 +535,20 @@ export class BatchRow extends Entity {
   })
   HOA2ManagementCompanyEmail: string;
 
+  @belongsTo(() => Batch)
+  batchId: string;
+
+  getId() {
+    return this.id;
+  }
+
   constructor(data?: Partial<BatchRow>) {
     super(data);
   }
 }
 
 export interface BatchRowRelations {
-  // describe navigational properties here
+  batch?: BatchWithRelations;
 }
 
-export type BatchWithRelations = BatchRow & BatchRowRelations;
+export type BatchRowWithRelations = BatchRow & BatchRowRelations;

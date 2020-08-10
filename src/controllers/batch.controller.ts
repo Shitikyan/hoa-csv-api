@@ -16,20 +16,20 @@ import {
   del,
   requestBody,
 } from '@loopback/rest';
-import {Batch} from '../models';
-import {BatchRepository} from '../repositories';
+import { Batch } from '../models';
+import { BatchRepository } from '../repositories';
 
 export class BatchController {
   constructor(
     @repository(BatchRepository)
-    public batchRepository : BatchRepository,
-  ) {}
+    public batchRepository: BatchRepository,
+  ) { }
 
   @post('/batches', {
     responses: {
       '200': {
         description: 'Batch model instance',
-        content: {'application/json': {schema: getModelSchemaRef(Batch)}},
+        content: { 'application/json': { schema: getModelSchemaRef(Batch) } },
       },
     },
   })
@@ -53,7 +53,7 @@ export class BatchController {
     responses: {
       '200': {
         description: 'Batch model count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -71,7 +71,7 @@ export class BatchController {
           'application/json': {
             schema: {
               type: 'array',
-              items: getModelSchemaRef(Batch, {includeRelations: true}),
+              items: getModelSchemaRef(Batch, { includeRelations: true }),
             },
           },
         },
@@ -88,7 +88,7 @@ export class BatchController {
     responses: {
       '200': {
         description: 'Batch PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -96,7 +96,7 @@ export class BatchController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Batch, {partial: true}),
+          schema: getModelSchemaRef(Batch, { partial: true }),
         },
       },
     })
@@ -112,7 +112,7 @@ export class BatchController {
         description: 'Batch model instance',
         content: {
           'application/json': {
-            schema: getModelSchemaRef(Batch, {includeRelations: true}),
+            schema: getModelSchemaRef(Batch, { includeRelations: true }),
           },
         },
       },
@@ -120,7 +120,7 @@ export class BatchController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Batch, {exclude: 'where'}) filter?: FilterExcludingWhere<Batch>
+    @param.filter(Batch, { exclude: 'where' }) filter?: FilterExcludingWhere<Batch>
   ): Promise<Batch> {
     return this.batchRepository.findById(id, filter);
   }
@@ -137,7 +137,7 @@ export class BatchController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Batch, {partial: true}),
+          schema: getModelSchemaRef(Batch, { partial: true }),
         },
       },
     })

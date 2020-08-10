@@ -1,12 +1,11 @@
-import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
-import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication} from '@loopback/rest';
-import {CrudRestComponent} from '@loopback/rest-crud';
-import {RestExplorerComponent} from '@loopback/rest-explorer';
-import {MySequence} from './sequence';
+import { BootMixin } from '@loopback/boot';
+import { ApplicationConfig } from '@loopback/core';
+import { RepositoryMixin } from '@loopback/repository';
+import { RestApplication } from '@loopback/rest';
+import { RestExplorerComponent } from '@loopback/rest-explorer';
+import { MySequence } from './sequence';
 
-export {ApplicationConfig};
+export { ApplicationConfig };
 
 export class MOAApplication extends BootMixin(
   RepositoryMixin(RestApplication),
@@ -17,7 +16,6 @@ export class MOAApplication extends BootMixin(
     this.sequence(MySequence);
 
     this.component(RestExplorerComponent);
-    this.component(CrudRestComponent);
 
     this.projectRoot = __dirname;
     this.bootOptions = {
