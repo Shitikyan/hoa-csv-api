@@ -1,4 +1,5 @@
 const { Readable } = require('stream');
+import { BatchRow } from '../models/batchRow.model'
 
 export class Helper {
   static bufferToStream(binary: Buffer) {
@@ -13,5 +14,24 @@ export class Helper {
 
   static getExtension(filename: string): string {
     return filename.substring(filename.lastIndexOf('.') + 1, filename.length)
+  }
+
+  static titleFormatter(title: string) : string {
+    let spaceCount = (title.match(/ /g) || []).length
+    let lineCount = (title.match(/-/g) || []).length
+
+    if (spaceCount > 0) {
+      for (let i = 0; i < spaceCount; i++) {
+        title = title.replace(' ', '_');
+      }
+    }
+
+    if (lineCount > 0) {
+      for (let i = 0; i < lineCount; i++) {
+        title = title.replace('-', '_');
+      }
+    }
+
+    return title;
   }
 }

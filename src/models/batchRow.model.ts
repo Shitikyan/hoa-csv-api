@@ -6,124 +6,123 @@ export class BatchRow extends Entity {
   @property({
     type: 'string',
     id: true,
-    mongodb: { dataType: 'ObjectId' },
   })
   id: string;
 
   @property({
     type: 'string',
   })
-  refId: string;
+  Ref_ID: string;
 
   @property({
     type: 'string'
   })
-  propertyFullStreetAddress: string;
+  PropertyFullStreetAddress: string;
 
   @property({
     type: 'string',
   })
-  propertyCity: string;
+  PropertyCity: string;
 
   @property({
     type: 'string',
   })
-  propertyState: string;
+  PropertyState: string;
 
   @property({
     type: 'string',
   })
-  propertyZip: string;
+  PropertyZip: string;
 
   @property({
     type: 'string',
   })
-  apn: string;
+  APN: string;
 
   @property({
     type: 'number',
   })
-  client: number;
+  Client: number;
 
   @property({
     type: 'number',
   })
-  loanType: number;
-
-  @property({
-    type: 'Date',
-  })
-  refferalDate: Date;
-
-  @property({
-    type: 'Date',
-  })
-  U20ActualDate: Date;
+  Loan_Type: number;
 
   @property({
     type: 'string',
   })
-  voluntary: string;
+  Referral_Date: string;
 
   @property({
     type: 'string',
   })
-  nonVoluntary: string;
+  U20_Actual_Date: string;
 
   @property({
     type: 'string',
   })
-  fips: string;
+  Voluntary: string;
 
   @property({
     type: 'string',
   })
-  state: string;
+  Non_Voluntary: string;
 
   @property({
     type: 'string',
   })
-  country: string;
+  FIPS: string;
 
   @property({
     type: 'string',
   })
-  parcel: string;
+  State: string;
 
   @property({
     type: 'string',
   })
-  currentOwner: string;
+  County: string;
 
   @property({
     type: 'string',
   })
-  parserHouseNumber: string;
+  Parcel: string;
 
   @property({
     type: 'string',
   })
-  parsedStreetPreDir: string;
+  CurrentOwner: string;
 
   @property({
     type: 'string',
   })
-  parserStreetName: string;
+  ParsedHouseNumber: string;
 
   @property({
     type: 'string',
   })
-  parserStreetTypeSuffix: string;
+  ParsedStreetPreDir: string;
 
   @property({
     type: 'string',
   })
-  parsedStreetPostDir: string;
+  ParsedStreetName: string;
 
   @property({
     type: 'string',
   })
-  parsedUnitType: string;
+  ParsedStreetTypeSuffix: string;
+
+  @property({
+    type: 'string',
+  })
+  ParsedStreetPostDir: string;
+
+  @property({
+    type: 'string',
+  })
+  ParsedUnitType: string;
 
   @property({
     type: 'string',
@@ -168,379 +167,375 @@ export class BatchRow extends Entity {
   @property({
     type: 'string',
   })
-  landUseDesc: string;
+  LandUseDesc: string;
 
   @property({
     type: 'number',
   })
-  yearBuilt: number;
+  YearBuilt: number;
 
   @property({
     type: 'string',
   })
-  block: string;
+  Block: string;
 
   @property({
     type: 'string',
   })
-  lot: string;
+  Lot: string;
 
   @property({
     type: 'string',
   })
-  subDivision: string;
+  Subdivision: string;
 
   @property({
     type: 'string',
   })
-  briefLegal: string;
+  BriefLegal: string;
 
   @property({
     type: 'string',
   })
-  zone: string;
+  Zone: string;
 
   @property({
-    type: 'Date',
+    type: 'string',
   })
-  latestSaleRecordingDate: Date;
+  LatestSale_RecordingDate: string;
 
   @property({
     type: 'number',
   })
-  latestSaleBook: number;
+  LatestSale_Book: number;
 
   @property({
     type: 'number',
   })
-  latestSalePage: number;
+  LatestSale_Page: number;
 
   @property({
     type: 'number',
   })
-  latestSaleDocNumber: number;
+  LatestSale_DocNumber: number;
 
   @property({
     type: 'string',
   })
-  latestSaleDocType: string;
+  LatestSale_DocType: string;
 
   @property({
     type: 'string',
   })
-  latestSaleSubdivision: string;
+  LatestSale_Subdivision: string;
 
   @property({
     type: 'string',
   })
-  latestSaleBriefLegal: string;
+  LatestSale_BriefLegal: string;
 
   @property({
     type: 'string',
   })
-  latestSaleCondoRider: string;
+  LatestSale_CondoRider: string;
 
   @property({
     type: 'string',
   })
-  latestSalePUDRider: string;
+  LatestSale_PUDRider: string;
 
   @property({
-    type: 'Date',
+    type: 'string',
   })
-  latestLoanRecordingDate: Date;
+  LatestLoan_RecordingDate: string;
 
   @property({
     type: 'number',
   })
-  latestLoanBook: number;
+  LatestLoan_Book: number;
 
   @property({
     type: 'number',
   })
-  latestLoanPage: number;
+  LatestLoan_Page: number;
 
   @property({
     type: 'number',
   })
-  latestLoanDocNumber: number;
+  LatestLoan_DocNumber: number;
 
   @property({
     type: 'string',
   })
-  latestLoanSubdivision: string;
+  LatestLoan_Subdivision: string;
 
   @property({
     type: 'string',
   })
-  latestLoanCondoRider: string;
+  LatestLoan_CondoRider: string;
 
   @property({
     type: 'string',
   })
-  latestLoanPUDRider: string;
+  LatestLoan_PUDRider: string;
 
   @property({
     type: 'string',
   })
-  latestLoanSource: string;
+  LatestLoan_Source: string;
 
   @property({
     type: 'string',
   })
-  match: string;
+  Match: string;
 
   @property({
     type: 'string',
   })
-  zip9HOAIndicator: string;
+  Zip9HOAIndicator: string;
 
   @property({
     type: 'string',
   })
-  HOAIndicator: string;
+  HOA_Indicator: string;
 
   @property({
     type: 'string',
   })
-  HOAFlag: string;
+  HOA_Flag: string;
 
   @property({
     type: 'string',
   })
-  comments: string;
+  Comments: string;
 
   @property({
     type: 'string',
   })
-  propertyAddress: string;
+  PropertyAddress: string;
 
   @property({
     type: 'string',
   })
-  city: string;
+  City: string;
 
   @property({
     type: 'string',
   })
-  zipCode: string;
-
-  @property({
-    type: 'Date',
-  })
-  reportDate: Date;
+  ZipCode: string;
 
   @property({
     type: 'string',
   })
-  nbrOfHOAs: string;
+  ReportDate: string;
 
   @property({
     type: 'string',
   })
-  HOA1Name: string;
+  NbrOfHOAs: string;
 
   @property({
     type: 'string',
   })
-  HOA1Type: string;
+  HOA_1_Name: string;
 
   @property({
     type: 'string',
   })
-  HOA1ContactType: string;
+  HOA_1_Type: string;
 
   @property({
     type: 'string',
   })
-  HOA1ContactName: string;
+  HOA_1_Contact_Type: string;
 
   @property({
     type: 'string',
   })
-  HOA1AddressMailing: string;
+  HOA_1_Contact_Name: string;
 
   @property({
     type: 'string',
   })
-  HOA1City: string;
+  HOA_1_Address_Mailing: string;
 
   @property({
     type: 'string',
   })
-  HOA1State: string;
+  HOA_1_City: string;
 
   @property({
     type: 'string',
   })
-  HOA1ZipCode: string;
+  HOA_1_State: string;
 
   @property({
     type: 'string',
   })
-  HOA1ContactPhoneType: string;
+  HOA_1_Zip_Code: string;
 
   @property({
     type: 'string',
   })
-  HOA1ContactPhone: string;
+  HOA_1_Contact_Phone_Type: string;
 
   @property({
     type: 'string',
   })
-  HOA1ContactEmail: string;
+  HOA_1_Contact_Phone: string;
 
   @property({
     type: 'string',
   })
-  HOA1ContactType2: string;
+  HOA_1_Contact_Email: string;
 
   @property({
     type: 'string',
   })
-  HOA1ManagementCompanyName: string;
+  HOA_Contact_Type_2: string;
 
   @property({
     type: 'string',
   })
-  HOA1ManagementCompanyAddress: string;
+  HOA_1_Management_Company_Name: string;
 
   @property({
     type: 'string',
   })
-  HOA1ManagementCompanyCity: string;
+  HOA_1_Management_Company_Address: string;
 
   @property({
     type: 'string',
   })
-  HOA1ManagementCompanyState: string;
+  HOA_1_Mangement_Company_City: string;
 
   @property({
     type: 'string',
   })
-  HOA1ManagementCompanyZipCode: string;
+  HOA_1_Management_Company_State: string;
 
   @property({
     type: 'string',
   })
-  HOA1ManagementCompanyPhoneType: string;
+  HOA_1_Management_Company_Zip_Code: string;
 
   @property({
     type: 'string',
   })
-  HOA1ManagementCompanyPhone: string;
+  HOA_1_Management_Company_Phone_Type: string;
 
   @property({
     type: 'string',
   })
-  HOA1ManagementCompanyEmail: string;
+  HOA_1_Management_Company_Phone: string;
 
   @property({
     type: 'string',
   })
-  HOA2Name: string;
+  HOA_1_Management_Company_Email: string;
 
   @property({
     type: 'string',
   })
-  HOA2Type: string;
+  HOA_2_Name: string;
 
   @property({
     type: 'string',
   })
-  HOA2ContactType: string;
+  HOA_2_Type: string;
 
   @property({
     type: 'string',
   })
-  HOA2ContactName: string;
+  HOA_2_Contact_Type: string;
 
   @property({
     type: 'string',
   })
-  HOA2AddressMailing: string;
+  HOA_2_Contact_Name: string;
 
   @property({
     type: 'string',
   })
-  HOA2City: string;
+  HOA_2_Address_Mailing: string;
 
   @property({
     type: 'string',
   })
-  HOA2State: string;
+  HOA_2_City: string;
 
   @property({
     type: 'string',
   })
-  HOA2ZipCode: string;
+  HOA_2_State: string;
 
   @property({
     type: 'string',
   })
-  HOA2ContactPhoneType: string;
+  HOA_2_Zip_Code: string;
 
   @property({
     type: 'string',
   })
-  HOA2ContactPhone: string;
+  HOA_2_Contact_Phone_Type: string;
 
   @property({
     type: 'string',
   })
-  HOA2ContactEmail: string;
+  HOA_2_Contact_Phone: string;
 
   @property({
     type: 'string',
   })
-  HOA2ManagementCompanyName: string;
+  HOA_2_Contact_Email: string;
 
   @property({
     type: 'string',
   })
-  HOA2ManagementCompanyContactName: string;
+  HOA_2_Management_Company_Name: string;
 
   @property({
     type: 'string',
   })
-  HOA2ManagementCompanyAddress: string;
+  HOA_2_Management_Company_Contact_Name: string;
 
   @property({
     type: 'string',
   })
-  HOA2ManagementCompanyCity: string;
+  HOA_2_Management_Company_Address: string;
 
   @property({
     type: 'string',
   })
-  HOA2ManagementCompanyState: string;
+  HOA_2_Mangement_Company_City: string;
 
   @property({
     type: 'string',
   })
-  HOA2ManagementCompanyZipCode: string;
+  HOA_2_Management_Company_State: string;
 
   @property({
     type: 'string',
   })
-  HOA2ManagementCompanyPhoneType: string;
+  HOA_2_Management_Company_Zip_Code: string;
 
   @property({
     type: 'string',
   })
-  HOA2ManagementCompanyPhone: string;
+  HOA_2_Management_Company_Phone_Type: string;
 
   @property({
     type: 'string',
   })
-  HOA2ManagementCompanyEmail: string;
+  HOA_2_Management_Company_Phone: string;
+
+  @property({
+    type: 'string',
+  })
+  HOA_2_Management_Company_Email: string;
 
   @belongsTo(() => Batch)
   batchId: string;
-
-  getId() {
-    return this.id;
-  }
 
   constructor(data?: Partial<BatchRow>) {
     super(data);

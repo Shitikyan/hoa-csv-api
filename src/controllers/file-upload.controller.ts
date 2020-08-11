@@ -9,7 +9,12 @@ import {
 import { CSV } from '../services/csv.service';
 import { FILE_UPLOAD_SERVICE } from '../keys';
 import { FileUploadHandler, ReqFile } from '../types';
-import { Helper } from '../services/helper.service'
+import { Helper } from '../services/helper.service';
+import { BatchRepository } from '../repositories/batch.repository'
+import { BatchRowRepository } from '../repositories/batch-row.repository'
+import { repository } from '@loopback/repository';
+import { Batch } from '../models/batch.model';
+import { BatchRow } from '../models';
 const CSVService = new CSV()
 
 /**
@@ -22,6 +27,10 @@ export class FileUploadController {
    */
   constructor(
     @inject(FILE_UPLOAD_SERVICE) private handler: FileUploadHandler,
+    @repository(BatchRepository)
+    public batchRepository: BatchRepository,
+    @repository(BatchRowRepository)
+    public batchRowRepository: BatchRowRepository,
   ) { }
   @post('/files', {
     responses: {
@@ -50,20 +59,49 @@ export class FileUploadController {
           const filename = result.files[0].originalname;
           const extension = Helper.getExtension(filename);
           const buffer = result.files[0].buffer;
+          let CSVObj: Array<BatchRow> = [];
 
           if (extension === 'xlsx') {
-            const CSVString = CSVService.XLSXToSCVParser(buffer);
-            const CSVObj = CSVService.CSVToObject(CSVString);
-
+            CSVObj = await CSVService.XLSXToSCVParser(buffer);
+            CSVObj.forEach((row: any) => {
+              for (var prop in row) {
+                if (Object.prototype.hasOwnProperty.call(row, prop)) {
+                  if (prop == "undefined") {
+                    delete row[prop];
+                  }
+                  const newProp = Helper.titleFormatter(prop);
+                  if (newProp != prop) {
+                    row[newProp] = row[prop];
+                    delete row[prop];
+                  }
+                }
+              }
+            })
+            // CSVObj = CSVService.CSVToObject(CSVString) as Array<BatchRow>;
           }
           else if (extension === 'csv') {
-            const CSVObj = await CSVService.StreamToCSVParser(buffer);
-
+            CSVObj = await CSVService.StreamToCSVParser(buffer);
           }
           else {
-
+            reject({ success: 'false', message: 'invalid file extension' })
+            return;
           }
-          resolve(result);
+
+          let batch = new Batch();
+          batch.date = new Date();
+          batch.client = 'CSV';
+          batch.status = 'Uploaded';
+          let resBatch = await this.batchRepository.create(batch);
+          let id = resBatch.getId();
+          CSVObj.forEach(element => {
+            element.batchId = id.toString();
+          })
+          console.log(CSVObj[1]);
+          await this.batchRowRepository
+            .create(CSVObj[1])
+            .catch((err) => console.log(err));
+
+          resolve({ success: true });
         }
       });
     });

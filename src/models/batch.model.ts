@@ -6,17 +6,31 @@ export class Batch extends Entity {
   @property({
     type: 'string',
     id: true,
-    mongodb: { dataType: 'ObjectId' },
+    generated: true,
   })
   id: string;
 
   @property({
     type: 'string',
   })
-  name: string;
+  client: string;
+
+  @property({
+    type: 'Date',
+  })
+  date: Date;
+
+  @property({
+    type: 'string',
+  })
+  status: string;
 
   @hasMany(() => BatchRow)
-  batchRows: BatchRow[];
+  batchRows?: BatchRow[];
+
+  getId() {
+    return this.id;
+  }
 
   constructor(data?: Partial<Batch>) {
     super(data);
