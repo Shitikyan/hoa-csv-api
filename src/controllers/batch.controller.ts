@@ -71,7 +71,7 @@ export class BatchController {
           'application/json': {
             schema: {
               type: 'array',
-              items: getModelSchemaRef(Batch, { includeRelations: true }),
+              items: getModelSchemaRef(Batch, { includeRelations: false }),
             },
           },
         },
@@ -81,6 +81,8 @@ export class BatchController {
   async find(
     @param.filter(Batch) filter?: Filter<Batch>,
   ): Promise<Batch[]> {
+    console.log(filter);
+
     return this.batchRepository.find(filter);
   }
 

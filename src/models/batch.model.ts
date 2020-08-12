@@ -13,6 +13,11 @@ export class Batch extends Entity {
   @property({
     type: 'string',
   })
+  name: string;
+
+  @property({
+    type: 'string',
+  })
   client: string;
 
   @property({
@@ -34,6 +39,10 @@ export class Batch extends Entity {
 
   constructor(data?: Partial<Batch>) {
     super(data);
+
+    this.date = new Date();
+    this.client = 'CSV';
+    this.status = 'Uploaded';
   }
 }
 

@@ -41,21 +41,10 @@ export class CSV {
       //drop those first two rows which are empty
       data.shift();
       data.shift();
-      console.log(data);
+      //console.log(data);
     });
 
     return data;
-
-    // if (workbook) {
-    //   for (const key in workbook.Sheets) {
-    //     if (Object.prototype.hasOwnProperty.call(workbook.Sheets, key)) {
-    //       const element = (workbook.Sheets as any)[key] as WorkSheet;
-    //       let c = utils.sheet_to_json(element);
-    //       console.log(c);
-    //       return [];
-    //     }
-    //   }
-    // }
   }
 
   CSVToObject(csvString: string) {
@@ -102,5 +91,21 @@ export class CSV {
         }
       });
     return results;
+  }
+
+  static ReqObjectToBatchRowMapper(rows: Array<any>): Array<BatchRow> {
+    const res: Array<BatchRow> = [];
+    rows.forEach(r => {
+      let batchRow: any = new BatchRow();
+      let propNames = Object.getOwnPropertyNames(batchRow);
+      for (var key in propNames) {
+        const name = propNames[key]
+        if (batchRow.hasOwnProperty(name)) {
+          batchRow[name] = r[name];
+        }
+      }
+      res.push(batchRow);
+    })
+    return res;
   }
 }

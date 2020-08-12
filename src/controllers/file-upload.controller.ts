@@ -77,7 +77,6 @@ export class FileUploadController {
                 }
               }
             })
-            // CSVObj = CSVService.CSVToObject(CSVString) as Array<BatchRow>;
           }
           else if (extension === 'csv') {
             CSVObj = await CSVService.StreamToCSVParser(buffer);
@@ -88,18 +87,14 @@ export class FileUploadController {
           }
 
           let batch = new Batch();
-          batch.date = new Date();
-          batch.client = 'CSV';
-          batch.status = 'Uploaded';
+          batch.name = filename.substring(0, filename.lastIndexOf('.'));
           let resBatch = await this.batchRepository.create(batch);
-          let id = resBatch.getId();
-          CSVObj.forEach(element => {
-            element.batchId = id.toString();
+          let id = resBatch.getId().toString();
+          CSVObj.forEach(async element => {
+            element.batchId = id;
           })
-          console.log(CSVObj[1]);
-          await this.batchRowRepository
-            .create(CSVObj[1])
-            .catch((err) => console.log(err));
+          
+          await this.batchRowRepository.createAll(CSVObj);
 
           resolve({ success: true });
         }
