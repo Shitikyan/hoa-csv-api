@@ -643,6 +643,10 @@ export class BatchRow extends Entity {
   @belongsTo(() => Batch)
   batchId: string;
 
+  getId() {
+    return this.id;
+  }
+
   constructor(data?: Partial<BatchRow>) {
     super(data);
   }
