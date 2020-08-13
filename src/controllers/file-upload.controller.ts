@@ -71,7 +71,7 @@ export class FileUploadController {
                   }
                   const newProp = Helper.titleFormatter(prop);
                   if (newProp != prop) {
-                    row[newProp] = row[prop];
+                    row[newProp] = row[prop].trim();
                     delete row[prop];
                   }
                 }
@@ -93,7 +93,7 @@ export class FileUploadController {
           CSVObj.forEach(async element => {
             element.batchId = id;
           })
-          
+
           await this.batchRowRepository.createAll(CSVObj);
 
           resolve({ success: true });

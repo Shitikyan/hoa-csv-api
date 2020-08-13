@@ -640,6 +640,11 @@ export class BatchRow extends Entity {
   })
   HOA_2_Management_Company_Email: string;
 
+  @property({
+    type: 'boolean', default: true,
+  })
+  pending: boolean;
+
   @belongsTo(() => Batch)
   batchId: string;
 

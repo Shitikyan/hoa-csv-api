@@ -17,12 +17,14 @@ import {
   requestBody,
 } from '@loopback/rest';
 import { Batch } from '../models';
-import { BatchRepository } from '../repositories';
+import { BatchRepository, BatchRowRepository } from '../repositories';
 
 export class BatchController {
   constructor(
     @repository(BatchRepository)
     public batchRepository: BatchRepository,
+    @repository(BatchRowRepository)
+    public batchRowRepository: BatchRowRepository,
   ) { }
 
   @post('/batches', {
@@ -81,9 +83,17 @@ export class BatchController {
   async find(
     @param.filter(Batch) filter?: Filter<Batch>,
   ): Promise<Batch[]> {
-    console.log(filter);
-
-    return this.batchRepository.find(filter);
+    let batches = await this.batchRepository.find(filter);
+    for (let i = 0; i < batches.length; i++) {
+      let b = batches[i];
+      let where = { batchId: b.id };
+      let batchRowCount = await this.batchRowRepository.count(where);
+      let pendingCount = await this.batchRowRepository.count({ batchId: b.id, pending: true});
+      b.count = batchRowCount.count;
+      b.pendingCount = pendingCount.count;
+    }
+    console.log(batches);
+    return batches;
   }
 
   @patch('/batches', {

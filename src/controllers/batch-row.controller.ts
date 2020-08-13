@@ -179,6 +179,22 @@ export class BatchRowController {
     await this.batchRowRepository.replaceById(id, batchRow);
   }
 
+  @put('/batch-rows/{id}/accept', {
+    responses: {
+      '204': {
+        description: 'BatchRow PUT success',
+      },
+    },
+  })
+  async accept(
+    @param.path.string('id') id: string,
+    @requestBody() batchRow: BatchRow,
+  ): Promise<void> {
+    batchRow.pending = false;
+    await this.batchRowRepository.replaceById(id, batchRow);
+  }
+
+
   @del('/batch-rows/{id}', {
     responses: {
       '204': {

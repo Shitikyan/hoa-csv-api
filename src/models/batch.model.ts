@@ -33,6 +33,16 @@ export class Batch extends Entity {
   @hasMany(() => BatchRow)
   batchRows?: BatchRow[];
 
+  @property({
+    type: 'number'
+  })
+  count: number;
+
+  @property({
+    type: 'number'
+  })
+  pendingCount: number;
+
   getId() {
     return this.id;
   }
