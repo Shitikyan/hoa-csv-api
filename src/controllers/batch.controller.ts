@@ -94,7 +94,7 @@ export class BatchController {
     }
     console.log(batches);
     return batches;
-  }
+  }   
 
   @patch('/batches', {
     responses: {

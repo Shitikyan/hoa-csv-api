@@ -84,7 +84,26 @@ export class BatchRowController {
     return this.batchRowRepository.find(filter);
   }
 
-  @get('/batch/{id}/batchRows', {
+  @get('/batch/{id}/batch-row', {
+    responses: {
+      '200': {
+        description: "Array of BatchRow's belonging to Batch",
+        content: {
+          'application/json': {
+            schema: { type: 'array', items: getModelSchemaRef(BatchRow) },
+          },
+        },
+      },
+    },
+  })
+  async findFirstBatchRow(
+    @param.path.string('id') id: string,
+  ): Promise<BatchRow | null> {
+    let filter = { where: { batchId: id } };
+    return this.batchRowRepository.findOne(filter);
+  }
+
+  @get('/batch/{id}/batch-rows', {
     responses: {
       '200': {
         description: "Array of BatchRow's belonging to Batch",
