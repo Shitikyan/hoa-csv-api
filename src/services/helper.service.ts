@@ -16,6 +16,10 @@ export class Helper {
     return filename.substring(filename.lastIndexOf('.') + 1, filename.length)
   }
 
+  static isString(data : any){
+    return typeof(data) === "string";
+  }
+
   static titleFormatter(title: string) : string {
     let spaceCount = (title.match(/ /g) || []).length
     let lineCount = (title.match(/-/g) || []).length

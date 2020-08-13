@@ -62,21 +62,7 @@ export class FileUploadController {
           let CSVObj: Array<BatchRow> = [];
 
           if (extension === 'xlsx') {
-            CSVObj = await CSVService.XLSXToSCVParser(buffer);
-            CSVObj.forEach((row: any) => {
-              for (var prop in row) {
-                if (Object.prototype.hasOwnProperty.call(row, prop)) {
-                  if (prop == "undefined") {
-                    delete row[prop];
-                  }
-                  const newProp = Helper.titleFormatter(prop);
-                  if (newProp != prop) {
-                    row[newProp] = row[prop].trim();
-                    delete row[prop];
-                  }
-                }
-              }
-            })
+            CSVObj = await CSVService.XLSXToObjectParser(buffer);
           }
           else if (extension === 'csv') {
             CSVObj = await CSVService.StreamToCSVParser(buffer);

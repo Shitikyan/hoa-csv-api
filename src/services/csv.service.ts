@@ -6,7 +6,7 @@ import { BatchRow } from '../models';
 
 export class CSV {
 
-  XLSXToSCVParser(buff: Buffer, separator = ','): any {
+  XLSXToObjectParser(buff: Buffer): any {
     const workbook = XLSX.read(buff, { type: 'buffer' });
 
     var sheet_name_list = workbook.SheetNames;
@@ -36,13 +36,30 @@ export class CSV {
         }
 
         if (!data[row]) data[row] = {};
+        if (Helper.isString(value)) {
+          value = value?.trim();
+        }
         data[row][headers[col]] = value;
       }
       //drop those first two rows which are empty
       data.shift();
       data.shift();
-      //console.log(data);
     });
+    data.forEach((row: any) => {
+      for (var prop in row) {
+        if (Object.prototype.hasOwnProperty.call(row, prop)) {
+          if (prop == "undefined") {
+            delete row[prop];
+          }
+          const newProp = Helper.titleFormatter(prop);
+          if (newProp != prop) {
+            row[newProp] = row[prop];
+            delete row[prop];
+          }
+        }
+      }
+    })
+    console.log(data);
 
     return data;
   }
