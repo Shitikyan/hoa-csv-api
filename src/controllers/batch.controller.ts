@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-for-of */
 import {
   Count,
   CountSchema,
@@ -16,8 +17,8 @@ import {
   del,
   requestBody,
 } from '@loopback/rest';
-import { Batch } from '../models';
-import { BatchRepository, BatchRowRepository } from '../repositories';
+import {Batch} from '../models';
+import {BatchRepository, BatchRowRepository} from '../repositories';
 
 export class BatchController {
   constructor(
@@ -25,13 +26,13 @@ export class BatchController {
     public batchRepository: BatchRepository,
     @repository(BatchRowRepository)
     public batchRowRepository: BatchRowRepository,
-  ) { }
+  ) {}
 
   @post('/batches', {
     responses: {
       '200': {
         description: 'Batch model instance',
-        content: { 'application/json': { schema: getModelSchemaRef(Batch) } },
+        content: {'application/json': {schema: getModelSchemaRef(Batch)}},
       },
     },
   })
@@ -55,13 +56,11 @@ export class BatchController {
     responses: {
       '200': {
         description: 'Batch model count',
-        content: { 'application/json': { schema: CountSchema } },
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
-  async count(
-    @param.where(Batch) where?: Where<Batch>,
-  ): Promise<Count> {
+  async count(@param.where(Batch) where?: Where<Batch>): Promise<Count> {
     return this.batchRepository.count(where);
   }
 
@@ -73,34 +72,35 @@ export class BatchController {
           'application/json': {
             schema: {
               type: 'array',
-              items: getModelSchemaRef(Batch, { includeRelations: false }),
+              items: getModelSchemaRef(Batch, {includeRelations: false}),
             },
           },
         },
       },
     },
   })
-  async find(
-    @param.filter(Batch) filter?: Filter<Batch>,
-  ): Promise<Batch[]> {
-    let batches = await this.batchRepository.find(filter);
+  async find(@param.filter(Batch) filter?: Filter<Batch>): Promise<Batch[]> {
+    const batches = await this.batchRepository.find(filter);
     for (let i = 0; i < batches.length; i++) {
-      let b = batches[i];
-      let where = { batchId: b.id };
-      let batchRowCount = await this.batchRowRepository.count(where);
-      let pendingCount = await this.batchRowRepository.count({ batchId: b.id, pending: true});
+      const b = batches[i];
+      const where = {batchId: b.id};
+      const batchRowCount = await this.batchRowRepository.count(where);
+      const pendingCount = await this.batchRowRepository.count({
+        batchId: b.id,
+        pending: true,
+      });
       b.count = batchRowCount.count;
       b.pendingCount = pendingCount.count;
     }
     console.log(batches);
     return batches;
-  }   
+  }
 
   @patch('/batches', {
     responses: {
       '200': {
         description: 'Batch PATCH success count',
-        content: { 'application/json': { schema: CountSchema } },
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
@@ -108,7 +108,7 @@ export class BatchController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Batch, { partial: true }),
+          schema: getModelSchemaRef(Batch, {partial: true}),
         },
       },
     })
@@ -124,7 +124,7 @@ export class BatchController {
         description: 'Batch model instance',
         content: {
           'application/json': {
-            schema: getModelSchemaRef(Batch, { includeRelations: true }),
+            schema: getModelSchemaRef(Batch, {includeRelations: true}),
           },
         },
       },
@@ -132,9 +132,19 @@ export class BatchController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Batch, { exclude: 'where' }) filter?: FilterExcludingWhere<Batch>
+    @param.filter(Batch, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Batch>,
   ): Promise<Batch> {
-    return this.batchRepository.findById(id, filter);
+    const batch = await this.batchRepository.findById(id, filter);
+    const where = {batchId: batch.id};
+    const batchRowCount = await this.batchRowRepository.count(where);
+    const pendingCount = await this.batchRowRepository.count({
+      batchId: batch.id,
+      pending: true,
+    });
+    batch.count = batchRowCount.count;
+    batch.pendingCount = pendingCount.count;
+    return batch;
   }
 
   @patch('/batches/{id}', {
@@ -149,7 +159,7 @@ export class BatchController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Batch, { partial: true }),
+          schema: getModelSchemaRef(Batch, {partial: true}),
         },
       },
     })

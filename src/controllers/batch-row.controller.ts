@@ -16,20 +16,20 @@ import {
   del,
   requestBody,
 } from '@loopback/rest';
-import { BatchRow } from '../models';
-import { BatchRowRepository } from '../repositories';
+import {BatchRow} from '../models';
+import {BatchRowRepository} from '../repositories';
 
 export class BatchRowController {
   constructor(
     @repository(BatchRowRepository)
     public batchRowRepository: BatchRowRepository,
-  ) { }
+  ) {}
 
   @post('/batch-rows', {
     responses: {
       '200': {
         description: 'BatchRow model instance',
-        content: { 'application/json': { schema: getModelSchemaRef(BatchRow) } },
+        content: {'application/json': {schema: getModelSchemaRef(BatchRow)}},
       },
     },
   })
@@ -53,13 +53,11 @@ export class BatchRowController {
     responses: {
       '200': {
         description: 'BatchRow model count',
-        content: { 'application/json': { schema: CountSchema } },
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
-  async count(
-    @param.where(BatchRow) where?: Where<BatchRow>,
-  ): Promise<Count> {
+  async count(@param.where(BatchRow) where?: Where<BatchRow>): Promise<Count> {
     return this.batchRowRepository.count(where);
   }
 
@@ -71,7 +69,7 @@ export class BatchRowController {
           'application/json': {
             schema: {
               type: 'array',
-              items: getModelSchemaRef(BatchRow, { includeRelations: true }),
+              items: getModelSchemaRef(BatchRow, {includeRelations: true}),
             },
           },
         },
@@ -90,7 +88,7 @@ export class BatchRowController {
         description: "Array of BatchRow's belonging to Batch",
         content: {
           'application/json': {
-            schema: { type: 'array', items: getModelSchemaRef(BatchRow) },
+            schema: {type: 'array', items: getModelSchemaRef(BatchRow)},
           },
         },
       },
@@ -99,7 +97,7 @@ export class BatchRowController {
   async findFirstBatchRow(
     @param.path.string('id') id: string,
   ): Promise<BatchRow | null> {
-    let filter = { where: { batchId: id } };
+    const filter = {where: {batchId: id}};
     return this.batchRowRepository.findOne(filter);
   }
 
@@ -109,7 +107,7 @@ export class BatchRowController {
         description: "Array of BatchRow's belonging to Batch",
         content: {
           'application/json': {
-            schema: { type: 'array', items: getModelSchemaRef(BatchRow) },
+            schema: {type: 'array', items: getModelSchemaRef(BatchRow)},
           },
         },
       },
@@ -118,7 +116,7 @@ export class BatchRowController {
   async findBatchRows(
     @param.path.string('id') id: string,
   ): Promise<BatchRow[]> {
-    let filter = { where: { batchId: id } };
+    const filter = {where: {batchId: id}};
     return this.batchRowRepository.find(filter);
   }
 
@@ -126,7 +124,7 @@ export class BatchRowController {
     responses: {
       '200': {
         description: 'BatchRow PATCH success count',
-        content: { 'application/json': { schema: CountSchema } },
+        content: {'application/json': {schema: CountSchema}},
       },
     },
   })
@@ -134,7 +132,7 @@ export class BatchRowController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(BatchRow, { partial: true }),
+          schema: getModelSchemaRef(BatchRow, {partial: true}),
         },
       },
     })
@@ -150,7 +148,7 @@ export class BatchRowController {
         description: 'BatchRow model instance',
         content: {
           'application/json': {
-            schema: getModelSchemaRef(BatchRow, { includeRelations: true }),
+            schema: getModelSchemaRef(BatchRow, {includeRelations: true}),
           },
         },
       },
@@ -158,7 +156,8 @@ export class BatchRowController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(BatchRow, { exclude: 'where' }) filter?: FilterExcludingWhere<BatchRow>
+    @param.filter(BatchRow, {exclude: 'where'})
+    filter?: FilterExcludingWhere<BatchRow>,
   ): Promise<BatchRow> {
     return this.batchRowRepository.findById(id, filter);
   }
@@ -175,7 +174,7 @@ export class BatchRowController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(BatchRow, { partial: true }),
+          schema: getModelSchemaRef(BatchRow, {partial: true}),
         },
       },
     })
@@ -212,7 +211,6 @@ export class BatchRowController {
     batchRow.pending = false;
     await this.batchRowRepository.replaceById(id, batchRow);
   }
-
 
   @del('/batch-rows/{id}', {
     responses: {
