@@ -84,44 +84,6 @@ export class BatchRowController {
     return this.batchRowRepository.find(filter);
   }
 
-  @get('/batch/{id}/batch-row', {
-    responses: {
-      '200': {
-        description: "Array of BatchRow's belonging to Batch",
-        content: {
-          'application/json': {
-            schema: { type: 'array', items: getModelSchemaRef(BatchRow) },
-          },
-        },
-      },
-    },
-  })
-  async findFirstBatchRow(
-    @param.path.string('id') id: string,
-  ): Promise<BatchRow | null> {
-    let filter = { where: { batchId: id } };
-    return this.batchRowRepository.findOne(filter);
-  }
-
-  @get('/batch/{id}/batch-rows', {
-    responses: {
-      '200': {
-        description: "Array of BatchRow's belonging to Batch",
-        content: {
-          'application/json': {
-            schema: { type: 'array', items: getModelSchemaRef(BatchRow) },
-          },
-        },
-      },
-    },
-  })
-  async findBatchRows(
-    @param.path.string('id') id: string,
-  ): Promise<BatchRow[]> {
-    let filter = { where: { batchId: id } };
-    return this.batchRowRepository.find(filter);
-  }
-
   @patch('/batch-rows', {
     responses: {
       '200': {
@@ -162,6 +124,37 @@ export class BatchRowController {
   ): Promise<BatchRow> {
     return this.batchRowRepository.findById(id, filter);
   }
+
+  @get('/batch-rows/{id}/next', {
+    responses: {
+      '200': {
+        description: 'next BatchRow model instance',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(BatchRow, { includeRelations: false }),
+          },
+        },
+      },
+    },
+  })
+  async next(
+    @param.path.string('id') id: string,
+  ): Promise<BatchRow | null> {
+    let batchRow = await this.batchRowRepository.findById(id);
+    let batchId = (batchRow.batchId).toString();
+    let filter = { where: { pending: true, batchId: batchId } };
+    let batchRows = await this.batchRowRepository.find(filter);
+    if (batchRows.length == 1) return null;
+
+    for (let i = 0; i < batchRows.length; i++) {
+      if (batchRows[i].id === id) {
+        if (i == batchRows.length - 1) return batchRows[0];
+        return batchRows[i + 1];
+      }
+    }
+    return null;
+  }
+
 
   @patch('/batch-rows/{id}', {
     responses: {

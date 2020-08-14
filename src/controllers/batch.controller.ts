@@ -16,7 +16,7 @@ import {
   del,
   requestBody,
 } from '@loopback/rest';
-import { Batch } from '../models';
+import { Batch, BatchRow } from '../models';
 import { BatchRepository, BatchRowRepository } from '../repositories';
 
 export class BatchController {
@@ -92,9 +92,48 @@ export class BatchController {
       b.count = batchRowCount.count;
       b.pendingCount = pendingCount.count;
     }
-    console.log(batches);
     return batches;
-  }   
+  }
+
+
+  @get('/batches/{id}/batch-row-first', {
+    responses: {
+      '200': {
+        description: "Array of BatchRow's belonging to Batch",
+        content: {
+          'application/json': {
+            schema: { type: 'array', items: getModelSchemaRef(BatchRow) },
+          },
+        },
+      },
+    },
+  })
+  async findFirstBatchRow(
+    @param.path.string('id') id: string,
+  ): Promise<BatchRow | null> {
+    let filter = { where: { batchId: id } };
+    return this.batchRowRepository.findOne(filter);
+  }
+
+  @get('/batches/{id}/batch-rows', {
+    responses: {
+      '200': {
+        description: "Array of BatchRow's belonging to Batch",
+        content: {
+          'application/json': {
+            schema: { type: 'array', items: getModelSchemaRef(BatchRow) },
+          },
+        },
+      },
+    },
+  })
+  async findBatchRows(
+    @param.path.string('id') id: string,
+  ): Promise<BatchRow[]> {
+    let filter = { where: { batchId: id } };
+    return this.batchRowRepository.find(filter);
+  }
+
 
   @patch('/batches', {
     responses: {

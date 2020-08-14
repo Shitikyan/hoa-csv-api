@@ -3,6 +3,7 @@ import xslx from 'node-xlsx';
 import { Helper } from '.';
 import csv from 'csv-parser';
 import { BatchRow } from '../models';
+import { head } from 'lodash';
 
 export class CSV {
 
@@ -31,6 +32,7 @@ export class CSV {
 
         //store header names
         if (row == 2 && value) {
+          // value = Helper.titleFormatter(value.trim());
           headers[col] = value;
           continue;
         }
@@ -41,7 +43,8 @@ export class CSV {
         }
         data[row][headers[col]] = value;
       }
-      //drop those first two rows which are empty
+      //drop those first three rows which are empty
+      data.shift();
       data.shift();
       data.shift();
     });
@@ -59,7 +62,6 @@ export class CSV {
         }
       }
     })
-    console.log(data);
 
     return data;
   }
