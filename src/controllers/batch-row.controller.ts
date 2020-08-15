@@ -16,20 +16,21 @@ import {
   del,
   requestBody,
 } from '@loopback/rest';
-import {BatchRow} from '../models';
-import {BatchRowRepository} from '../repositories';
+import { BatchRow } from '../models';
+import { BatchRowRepository } from '../repositories';
+import { BatchRowResponse } from '../types';
 
 export class BatchRowController {
   constructor(
     @repository(BatchRowRepository)
     public batchRowRepository: BatchRowRepository,
-  ) {}
+  ) { }
 
   @post('/batch-rows', {
     responses: {
       '200': {
         description: 'BatchRow model instance',
-        content: {'application/json': {schema: getModelSchemaRef(BatchRow)}},
+        content: { 'application/json': { schema: getModelSchemaRef(BatchRow) } },
       },
     },
   })
@@ -53,7 +54,7 @@ export class BatchRowController {
     responses: {
       '200': {
         description: 'BatchRow model count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -69,7 +70,7 @@ export class BatchRowController {
           'application/json': {
             schema: {
               type: 'array',
-              items: getModelSchemaRef(BatchRow, {includeRelations: true}),
+              items: getModelSchemaRef(BatchRow, { includeRelations: true }),
             },
           },
         },
@@ -86,7 +87,7 @@ export class BatchRowController {
     responses: {
       '200': {
         description: 'BatchRow PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -94,7 +95,7 @@ export class BatchRowController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(BatchRow, {partial: true}),
+          schema: getModelSchemaRef(BatchRow, { partial: true }),
         },
       },
     })
@@ -110,7 +111,7 @@ export class BatchRowController {
         description: 'BatchRow model instance',
         content: {
           'application/json': {
-            schema: getModelSchemaRef(BatchRow, {includeRelations: true}),
+            schema: getModelSchemaRef(BatchRow, { includeRelations: true }),
           },
         },
       },
@@ -118,7 +119,7 @@ export class BatchRowController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(BatchRow, {exclude: 'where'})
+    @param.filter(BatchRow, { exclude: 'where' })
     filter?: FilterExcludingWhere<BatchRow>,
   ): Promise<BatchRow> {
     return this.batchRowRepository.findById(id, filter);
@@ -138,12 +139,11 @@ export class BatchRowController {
   })
   async next(
     @param.path.string('id') id: string,
-  ): Promise<BatchRow | null> {
-    let batchRow = await this.batchRowRepository.findById(id);
-    let batchId = (batchRow.batchId).toString();
-    let filter = { where: { pending: true, batchId: batchId } };
-    let batchRows = await this.batchRowRepository.find(filter);
-    if (batchRows.length == 1) return null;
+  ): Promise<BatchRowResponse> {
+    const batchRow = await this.batchRowRepository.findById(id);
+    const filter = { where: { pending: true, batchId: batchRow.batchId } };
+    const batchRows = await this.batchRowRepository.find(filter);
+    if (batchRows.length === 1) return null;
 
     for (let i = 0; i < batchRows.length; i++) {
       if (batchRows[i].id === id) {
@@ -151,9 +151,14 @@ export class BatchRowController {
         return batchRows[i + 1];
       }
     }
+    // batchRows.forEach((value, index) => {
+    //   if (value.id === id) {
+    //     if (index === batchRows.length - 1) return batchRows[0];
+    //     return batchRows[index + 1];
+    //   }
+    // });
     return null;
   }
-
 
   @patch('/batch-rows/{id}', {
     responses: {
@@ -167,7 +172,7 @@ export class BatchRowController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(BatchRow, {partial: true}),
+          schema: getModelSchemaRef(BatchRow, { partial: true }),
         },
       },
     })

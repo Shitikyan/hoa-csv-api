@@ -1,3 +1,3 @@
 export * from './file-upload.service';
 export * from './csv.service';
-export * from './helper.service';
+export * from './xlsx.service';

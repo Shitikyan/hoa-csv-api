@@ -6,16 +6,16 @@ import {
   Response,
   RestBindings,
 } from '@loopback/rest';
-import { CSV } from '../services/csv.service';
 import { FILE_UPLOAD_SERVICE } from '../keys';
 import { FileUploadHandler, ReqFile } from '../types';
-import { Helper } from '../services/helper.service';
+import { StringUtils } from '../Utils/stringUtils';
 import { BatchRepository } from '../repositories/batch.repository'
 import { BatchRowRepository } from '../repositories/batch-row.repository'
 import { repository } from '@loopback/repository';
 import { Batch } from '../models/batch.model';
 import { BatchRow } from '../models';
-const CSVService = new CSV()
+import { CSVService } from '../services/csv.service';
+import { XLSXService } from '../services/xlsx.service';
 
 /**
  * A controller to handle file uploads using multipart/form-data media type
@@ -53,37 +53,40 @@ export class FileUploadController {
   ): Promise<object> {
     return new Promise<object>((resolve, reject) => {
       this.handler(request, response, async (err: unknown) => {
-        if (err) reject(err);
-        else {
-          const result = FileUploadController.getFilesAndFields(request);
-          const filename = result.files[0].originalname;
-          const extension = Helper.getExtension(filename);
-          const buffer = result.files[0].buffer;
-          let CSVObj: Array<BatchRow> = [];
-
-          if (extension === 'xlsx') {
-            CSVObj = await CSVService.XLSXToObjectParser(buffer);
-          }
-          else if (extension === 'csv') {
-            CSVObj = await CSVService.StreamToCSVParser(buffer);
-          }
-          else {
-            reject({ success: 'false', message: 'invalid file extension' })
-            return;
-          }
-
-          let batch = new Batch();
-          batch.name = filename.substring(0, filename.lastIndexOf('.'));
-          let resBatch = await this.batchRepository.create(batch);
-          let id = resBatch.getId().toString();
-          CSVObj.forEach(async element => {
-            element.batchId = id;
-          })
-
-          await this.batchRowRepository.createAll(CSVObj);
-
-          resolve({ success: true });
+        if (err) {
+          reject(err);
+          return;
         }
+
+        const result = FileUploadController.getFilesAndFields(request);
+        const file = result.files[0];
+        const filename = file.originalname;
+        const extension = StringUtils.getExtension(filename);
+        const buffer = file.buffer;
+        let batchRows: Array<BatchRow> = [];
+
+        if (extension === 'xlsx') {
+          batchRows = await XLSXService.parseXLSX(buffer);
+        }
+        else if (extension === 'csv') {
+          batchRows = await CSVService.parseCSV(buffer);
+        }
+        else {
+          reject({ success: 'false', message: 'invalid file extension' })
+          return;
+        }
+
+        const batch = new Batch();
+        batch.name = filename.substring(0, filename.lastIndexOf('.'));
+        const resBatch = await this.batchRepository.create(batch);
+        const id = resBatch.getId().toString();
+        batchRows.forEach(element => {
+          element.batchId = id;
+        })
+
+        await this.batchRowRepository.createAll(batchRows);
+
+        resolve({ success: true });
       });
     });
   }
