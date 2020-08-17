@@ -108,7 +108,7 @@ export class BatchRowController {
   @get('/batch-rows/{id}', {
     responses: {
       '200': {
-        description: 'BatchRow model instance',
+        description: 'find BatchRow model by id',
         content: {
           'application/json': {
             schema: getModelSchemaRef(BatchRow, { includeRelations: true }),
@@ -143,20 +143,16 @@ export class BatchRowController {
     const batchRow = await this.batchRowRepository.findById(id);
     const filter = { where: { pending: true, batchId: batchRow.batchId } };
     const batchRows = await this.batchRowRepository.find(filter);
-    if (batchRows.length === 1) return null;
+    const rowsLength = batchRows.length;
+    if (rowsLength === 1) return null;
 
-    for (let i = 0; i < batchRows.length; i++) {
+    for (let i = 0; i < rowsLength; i++) {
       if (batchRows[i].id === id) {
-        if (i == batchRows.length - 1) return batchRows[0];
+        if (i == rowsLength - 1) return batchRows[0];
         return batchRows[i + 1];
       }
     }
-    // batchRows.forEach((value, index) => {
-    //   if (value.id === id) {
-    //     if (index === batchRows.length - 1) return batchRows[0];
-    //     return batchRows[index + 1];
-    //   }
-    // });
+
     return null;
   }
 

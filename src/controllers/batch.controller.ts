@@ -99,7 +99,7 @@ export class BatchController {
   @get('/batches/{id}/batch-row-first', {
     responses: {
       '200': {
-        description: "Array of BatchRow's belonging to Batch",
+        description: "First pending BatchRow belonging to Batch",
         content: {
           'application/json': {
             schema: { type: 'array', items: getModelSchemaRef(BatchRow) },
